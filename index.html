@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MASAFY OS — 操作できるポートフォリオ | Masato Suzuki</title>
+<meta name="description" content="ブラウザで起動する架空のOS型ポートフォリオ。ターミナルを叩いて、Masato Suzuki (MASAFY) の作品と経歴を探検してください。Security × AI × Maker。" />
+<link rel="canonical" href="https://os.1qaz.jp/" />
+
+<!-- OGP -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="MASAFY OS — 操作できるポートフォリオ" />
+<meta property="og:description" content="ブラウザで起動する架空のOS。ターミナルを叩いて作品と経歴を探検。フラグを見つけられるかな？" />
+<meta property="og:url" content="https://os.1qaz.jp/" />
+<meta property="og:site_name" content="MASAFY OS" />
+<meta property="og:image" content="https://os.1qaz.jp/assets/og.jpg" />
+<meta property="og:locale" content="ja_JP" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@masafyorg" />
+
+<!-- favicon (inline SVG) -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23101725'/%3E%3Ctext x='10' y='44' font-family='monospace' font-size='30' font-weight='bold' fill='%2312B5A8'%3E%26gt;_%3C/text%3E%3C/svg%3E" />
+
+<!-- fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="css/os.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "mainEntity": {
+    "@type": "Person",
+    "name": "Masato Suzuki",
+    "alternateName": "MASAFY",
+    "jobTitle": "Security Engineer",
+    "url": "https://os.1qaz.jp/",
+    "sameAs": [
+      "https://masafy.org/",
+      "https://github.com/masafykun",
+      "https://x.com/masafyorg",
+      "https://qiita.com/masafy",
+      "https://huggingface.co/masafy",
+      "https://orcid.org/0009-0000-7977-2756",
+      "https://www.linkedin.com/in/masato-suzuki-b801ab360"
+    ]
+  }
+}
+</script>
+</head>
+<body>
+
+<div id="boot">
+  <pre id="boot-lines"></pre>
+  <div id="boot-skip"></div>
+</div>
+
+<header id="menubar">
+  <div id="mb-left"></div>
+  <div id="mb-right"></div>
+</header>
+
+<main id="desktop">
+  <div id="icons"></div>
+  <aside id="widget"></aside>
+</main>
+
+<nav id="dock"></nav>
+
+<noscript>
+  <div style="position:fixed;inset:0;background:#FBF6EC;color:#17151F;padding:40px;font-family:monospace;z-index:99999">
+    MASAFY OS requires JavaScript.<br />
+    Static profile: <a href="https://masafy.org/">masafy.org</a> / <a href="https://github.com/masafykun">github.com/masafykun</a>
+  </div>
+</noscript>
+
+<script src="js/data.js"></script>
+<script src="js/apps.js"></script>
+<script src="js/terminal.js"></script>
+<script src="js/os.js"></script>
+</body>
+</html>
