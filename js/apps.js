@@ -148,12 +148,24 @@
 
   /* ---------------- ROOT (CTF reward) ---------------- */
   M.APPS.root = {
-    icon: '🔓', size: [560, 430], dark: true,
+    icon: '🔓', size: [560, 470], dark: true,
     render(el) {
+      const found = M.ctf.found();
+      const all = M.ctf.allFound();
+      const board = M.CTF.order.map((id) => {
+        const f = M.CTF.flags[id];
+        const got = found.includes(id);
+        return '<div class="root-slot' + (got ? ' got' : '') + '">' +
+          '<span class="root-slot-name">' + (got ? '🚩 ' : '▫️ ') + esc(f.name[M.lang]) + '</span>' +
+          '<span class="root-slot-val">' + (got ? esc(f.flag) : esc(t('root.locked') + ' — ' + f.hint[M.lang])) + '</span>' +
+          '</div>';
+      }).join('');
       el.innerHTML =
         '<div class="rootapp">' +
         '<div class="root-h">' + t('root.h') + '</div>' +
-        '<pre class="root-flag">' + M.CTF.flag + '</pre>' +
+        '<div class="sec-h root-board-h">' + t('root.progress.h') + ' ' + found.length + '/' + M.CTF.order.length + '</div>' +
+        '<div class="root-board">' + board + '</div>' +
+        (all ? '<pre class="root-flag root-master">' + t('root.master') + '</pre>' : '') +
         '<p>' + t('root.b1') + '</p>' +
         '<p>' + t('root.b2') + '</p>' +
         '<p>' + t('root.b3') + '</p>' +

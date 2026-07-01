@@ -239,7 +239,7 @@ MASAFY.I18N = {
     'sec.pat2.link': '↗ 詳細ページ（masafy.org）',
     'sec.works.h': '🛡️ セキュリティの制作物',
     'sec.ctf.h': '🚩 CTF',
-    'sec.ctf.b': 'このOSにはフラグが1つ隠されています。ターミナルを開いて `nmap` から始めてみてください。見つけた人だけが開ける画面があります。',
+    'sec.ctf.b': 'このOSには4つのフラグ（偵察・暗号・ログ解析・リバーシング）が隠されています。ターミナルで `flags` と打つと進捗が見えます。1つ見つけるとROOTが解放、全制覇すると……？',
     'mail.lead': 'お仕事・コラボ・質問、なんでもどうぞ。',
     'mail.email': 'メール',
     'mail.links': 'リンク',
@@ -248,7 +248,12 @@ MASAFY.I18N = {
     'root.b1': 'フラグ発見おめでとうございます！🎉 あなたのように「とりあえず触って、調べて、掘る」人と仕事をするのが好きです。',
     'root.b2': 'このOSは外部ライブラリゼロ・フルスクラッチの vanilla JS で書かれています。ウィンドウマネージャも、このCTFも、ぜんぶ手書きです。ソースは GitHub（masafykun/masafy-os）で公開しています。',
     'root.b3': 'せっかくなので、隠しコマンド `neofetch --masafy` もどうぞ。',
+    'root.progress.h': '🚩 SCOREBOARD',
+    'root.master': '🏆 CTF MASTER — 全フラグ制覇！本物です。ぜひ連絡先アプリからその腕前を自慢しに来てください。',
+    'root.locked': '未発見',
     'toast.rootUnlocked': '🔓 ROOT がDockに追加されました',
+    'toast.flag': '🚩 フラグ獲得: ',
+    'toast.master': '🏆 CTF MASTER！全フラグ制覇',
   },
   en: {
     'menubar.os': 'MASAFY OS',
@@ -305,7 +310,7 @@ MASAFY.I18N = {
     'sec.pat2.link': '↗ Details (masafy.org)',
     'sec.works.h': '🛡️ Security works',
     'sec.ctf.h': '🚩 CTF',
-    'sec.ctf.b': 'One flag is hidden in this OS. Open the Terminal and start with `nmap`. Those who find it unlock a hidden screen.',
+    'sec.ctf.b': 'Four flags (recon, crypto, log forensics, reversing) are hidden in this OS. Type `flags` in the Terminal to see your progress. One flag unlocks ROOT; capture all four and…?',
     'mail.lead': 'Work, collaboration, questions — all welcome.',
     'mail.email': 'Email',
     'mail.links': 'Links',
@@ -314,7 +319,12 @@ MASAFY.I18N = {
     'root.b1': 'Congrats on capturing the flag! 🎉 I love working with people who poke, inspect, and dig.',
     'root.b2': 'This OS is hand-written vanilla JS with zero external libraries — the window manager and this CTF included. Source is public at GitHub (masafykun/masafy-os).',
     'root.b3': 'One more secret for you: try `neofetch --masafy`.',
+    'root.progress.h': '🚩 SCOREBOARD',
+    'root.master': '🏆 CTF MASTER — all flags captured. You are the real deal. Come brag via the Contact app.',
+    'root.locked': 'not found',
     'toast.rootUnlocked': '🔓 ROOT added to the Dock',
+    'toast.flag': '🚩 Flag captured: ',
+    'toast.master': '🏆 CTF MASTER! All flags captured',
   },
 };
 
@@ -330,8 +340,33 @@ MASAFY.CONTACTS = [
   ['🏠', 'masafy.org', 'https://masafy.org/', 'masafy.org'],
 ];
 
-/* ---------------- CTF ---------------- */
+/* ---------------- CTF ----------------
+   4 flags, one per discipline. Encodings (base64/rot13/hex,
+   reversed password) are computed at runtime — flags below
+   are the single source of truth. */
 MASAFY.CTF = {
-  flag: 'FLAG{m4s4fy_s3cur3_by_des1gn}',
-  b64: 'RkxBR3ttNHM0ZnlfczNjdXIzX2J5X2RlczFnbn0=',
+  order: ['recon', 'crypto', 'forensics', 'rev'],
+  flags: {
+    recon: {
+      flag: 'FLAG{m4s4fy_s3cur3_by_des1gn}',
+      name: { ja: 'RECON — 偵察', en: 'RECON' },
+      hint: { ja: 'まずは `nmap`', en: 'start with `nmap`' },
+    },
+    crypto: {
+      flag: 'FLAG{r0t13_1s_n0t_3ncrypt10n}',
+      name: { ja: 'CRYPTO — 暗号', en: 'CRYPTO' },
+      hint: { ja: '隠しファイル…？ (`ls -a`)', en: 'hidden files…? (`ls -a`)' },
+    },
+    forensics: {
+      flag: 'FLAG{gr3p_th3_l0gs}',
+      name: { ja: 'FORENSICS — ログ解析', en: 'FORENSICS' },
+      hint: { ja: 'ログを読め (`ls /var/log`)', en: 'read the logs (`ls /var/log`)' },
+    },
+    rev: {
+      flag: 'FLAG{str1ngs_n3v3r_l13}',
+      name: { ja: 'REVERSING — 解析', en: 'REVERSING' },
+      hint: { ja: '/bin に何かいる (`ls /bin`)', en: 'something lives in /bin (`ls /bin`)' },
+    },
+  },
+  crackmePassword: 'r3d_p4nd4',
 };

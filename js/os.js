@@ -60,6 +60,72 @@
     return true;
   };
 
+  /* ---------- CTF scoreboard ---------- */
+  M.ctf = {
+    found() {
+      try { return JSON.parse(localStorage.getItem('masafy-os-flags') || '[]'); }
+      catch (e) { return []; }
+    },
+    isFound(id) { return this.found().includes(id); },
+    allFound() { return M.CTF.order.every((id) => this.isFound(id)); },
+    /* returns {isNew, all} */
+    capture(id) {
+      const f = this.found();
+      if (f.includes(id)) return { isNew: false, all: this.allFound() };
+      f.push(id);
+      localStorage.setItem('masafy-os-flags', JSON.stringify(f));
+      OSLog.log('CTF: flag captured — ' + id + ' (' + f.length + '/' + M.CTF.order.length + ')');
+      M.toast(M.t('toast.flag') + id.toUpperCase() + ' (' + f.length + '/' + M.CTF.order.length + ')');
+      M.unlockRoot();
+      const all = this.allFound();
+      if (all) {
+        setTimeout(() => { M.toast(M.t('toast.master')); M.matrixRain(); }, 700);
+        OSLog.log('CTF: ALL FLAGS CAPTURED — CTF MASTER 🏆');
+      }
+      // refresh ROOT window if open
+      if (M.WM.windows.root) M.APPS.root.render(M.WM.windows.root.querySelector('.win-body'));
+      return { isNew: true, all };
+    },
+  };
+  // migration: pre-scoreboard visitors who already unlocked ROOT get recon credited
+  if (M.isRootUnlocked() && M.ctf.found().length === 0) {
+    localStorage.setItem('masafy-os-flags', JSON.stringify(['recon']));
+  }
+
+  /* ---------- matrix rain (CTF MASTER celebration) ---------- */
+  M.matrixRain = function (durationMs) {
+    if (document.getElementById('matrix-rain')) return;
+    const cv = document.createElement('canvas');
+    cv.id = 'matrix-rain';
+    cv.style.cssText = 'position:fixed;inset:0;z-index:5000;pointer-events:none;';
+    document.body.appendChild(cv);
+    cv.width = window.innerWidth; cv.height = window.innerHeight;
+    const ctx = cv.getContext('2d');
+    const fs = 16, cols = Math.ceil(cv.width / fs);
+    const drops = Array.from({ length: cols }, () => Math.floor(-Math.random() * 40));
+    const glyphs = 'MASAFYOS01<>/#$%&*+=?ﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓ';
+    const t0 = performance.now();
+    const dur = durationMs || 6500;
+    (function frame(now) {
+      const el = now - t0;
+      ctx.fillStyle = 'rgba(5,7,13,0.12)';
+      ctx.fillRect(0, 0, cv.width, cv.height);
+      ctx.font = fs + 'px monospace';
+      for (let i = 0; i < cols; i++) {
+        const ch = glyphs[Math.floor(Math.random() * glyphs.length)];
+        ctx.fillStyle = Math.random() < 0.08 ? '#F4C544' : '#12B5A8';
+        ctx.fillText(ch, i * fs, drops[i] * fs);
+        drops[i] = drops[i] * fs > cv.height && Math.random() > 0.975 ? 0 : drops[i] + 1;
+      }
+      if (el < dur) requestAnimationFrame(frame);
+      else {
+        cv.style.transition = 'opacity 1s';
+        cv.style.opacity = '0';
+        setTimeout(() => cv.remove(), 1000);
+      }
+    })(t0);
+  };
+
   /* ---------- window manager ---------- */
   const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
 
@@ -340,7 +406,7 @@
     '',
     'Starting window manager ........................ OK',
     'Starting dock .................................. OK',
-    'Hiding 1 flag in the filesystem ................ [REDACTED]',
+    'Hiding 4 flags in the filesystem ............... [REDACTED]',
     '',
     'Welcome to MASAFY OS.',
   ];
@@ -379,6 +445,14 @@
     OSLog.log('boot complete — MASAFY OS 5.0');
     WM.open('about');
     if (!isMobile()) WM.open('terminal');
+    // a wink for people who open DevTools
+    console.log(
+      '%c MASAFY OS %c\n\n' +
+      'curious enough to open DevTools? good instinct.\n' +
+      '4 flags are hidden in this OS — open the Terminal and type `flags`.\n' +
+      'places worth a look: ls -a, /var/log, /bin\n',
+      'background:#101725;color:#12B5A8;font-size:18px;font-weight:bold;padding:6px 14px;border-radius:6px;', ''
+    );
   }
 
   /* ---------- init ---------- */

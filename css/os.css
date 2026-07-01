@@ -304,6 +304,19 @@ a { color: var(--teal-dark); }
 
 /* ---------- root app ---------- */
 .rootapp { font-size: 13px; line-height: 1.8; }
+.root-board-h { color: var(--teal-light); border-bottom-color: rgba(123, 224, 214, 0.3); }
+.root-board { display: flex; flex-direction: column; gap: 6px; margin: 8px 0 12px; }
+.root-slot {
+  display: flex; flex-direction: column;
+  border: 1px solid rgba(107, 103, 118, 0.4); border-radius: 8px;
+  padding: 6px 10px; font-family: var(--mono); font-size: 11.5px;
+  color: var(--mut-l);
+}
+.root-slot.got { border-color: rgba(244, 197, 68, 0.55); background: rgba(244, 197, 68, 0.07); }
+.root-slot-name { font-weight: 800; letter-spacing: 0.05em; }
+.root-slot.got .root-slot-name { color: var(--gold); }
+.root-slot.got .root-slot-val { color: var(--teal-light); }
+.root-master { color: var(--gold); border-color: rgba(244, 197, 68, 0.6); text-shadow: 0 0 12px rgba(244, 197, 68, 0.4); white-space: pre-wrap; }
 .rootapp p { margin: 8px 0; }
 .root-h { font-family: var(--mono); font-weight: 800; color: var(--gold); letter-spacing: 0.06em; margin-bottom: 8px; }
 .root-flag {
